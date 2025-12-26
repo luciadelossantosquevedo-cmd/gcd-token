@@ -13,6 +13,14 @@
     
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
     
+    :root {
+      --background-color: #0a0e27;
+      --gradient-primary: #667eea;
+      --gradient-secondary: #764ba2;
+      --accent-color: #f093fb;
+      --text-color: #ffffff;
+    }
+    
     * {
       margin: 0;
       padding: 0;
@@ -28,7 +36,11 @@
     }
     
     .crypto-gradient {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background: linear-gradient(135deg, var(--gradient-primary) 0%, var(--gradient-secondary) 50%, var(--accent-color) 100%);
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, var(--gradient-primary) 0%, var(--gradient-secondary) 100%);
     }
     
     .glass-effect {
@@ -47,23 +59,38 @@
       box-shadow: 0 30px 60px rgba(102, 126, 234, 0.4);
     }
     
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary {
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    
     .cursor-pointer {
       cursor: pointer;
     }
     
     .hidden-details {
-      animation: slideDown 0.3s ease forwards;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
     }
     
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        max-height: 0;
-      }
-      to {
-        opacity: 1;
-        max-height: 500px;
-      }
+    .hidden-details.active {
+      max-height: 500px;
+      opacity: 1;
     }
     
     .stat-card {
@@ -141,13 +168,13 @@
       left: 0;
       width: 0;
       height: 3px;
-      background: linear-gradient(90deg, #667eea, #764ba2);
+      background: linear-gradient(90deg, var(--gradient-primary), var(--gradient-secondary));
       transition: width 0.3s ease;
       border-radius: 2px;
     }
     
     .nav-link:hover {
-      color: #667eea;
+      color: var(--gradient-primary);
     }
     
     .nav-link:hover::after {
@@ -213,7 +240,7 @@
       transform: translateX(-50%);
       width: 80px;
       height: 4px;
-      background: linear-gradient(90deg, #667eea, #764ba2);
+      background: linear-gradient(90deg, var(--gradient-primary), var(--gradient-secondary));
       border-radius: 2px;
     }
     
@@ -270,8 +297,22 @@
     .particle {
       position: absolute;
       border-radius: 50%;
-      background: rgba(102, 126, 234, 0.3);
       animation: particleFloat 15s infinite;
+    }
+    
+    .particle:nth-child(1), .particle:nth-child(4), .particle:nth-child(7) {
+      background: radial-gradient(circle, rgba(102, 126, 234, 0.8) 0%, rgba(102, 126, 234, 0) 70%);
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
+    }
+    
+    .particle:nth-child(2), .particle:nth-child(5), .particle:nth-child(8) {
+      background: radial-gradient(circle, rgba(240, 147, 251, 0.8) 0%, rgba(240, 147, 251, 0) 70%);
+      box-shadow: 0 0 20px rgba(240, 147, 251, 0.6);
+    }
+    
+    .particle:nth-child(3), .particle:nth-child(6), .particle:nth-child(9) {
+      background: radial-gradient(circle, rgba(118, 75, 162, 0.8) 0%, rgba(118, 75, 162, 0) 70%);
+      box-shadow: 0 0 20px rgba(118, 75, 162, 0.6);
     }
     
     @keyframes particleFloat {
@@ -294,8 +335,8 @@
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
- <body class="h-full font-body">
-  <div id="app" class="w-full h-full overflow-auto relative" style="background: linear-gradient(180deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);"><!-- Particles Background -->
+ <body class="h-full w-full">
+  <div id="app" class="h-full w-full overflow-auto relative" style="background: linear-gradient(180deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);"><!-- Particles Background -->
    <div class="particle" style="left: 10%; width: 4px; height: 4px; animation-delay: 0s;"></div>
    <div class="particle" style="left: 20%; width: 6px; height: 6px; animation-delay: 2s;"></div>
    <div class="particle" style="left: 30%; width: 3px; height: 3px; animation-delay: 4s;"></div>
@@ -304,103 +345,41 @@
    <div class="particle" style="left: 60%; width: 6px; height: 6px; animation-delay: 5s;"></div>
    <div class="particle" style="left: 70%; width: 3px; height: 3px; animation-delay: 2.5s;"></div>
    <div class="particle" style="left: 80%; width: 5px; height: 5px; animation-delay: 4.5s;"></div>
-   <div class="particle" style="left: 90%; width: 4px; height: 4px; animation-delay: 1.5s;"></div><!-- Header -->
-   <header class="w-full fixed top-0 z-50 glass-effect">
-    <nav class="max-w-7xl mx-auto px-6 py-5">
-     <div class="flex items-center justify-between">
-      <div class="flex items-center gap-4"><img src="https://i.postimg.cc/DwgGWVg3/Whats-App-Image-2025-12-14-at-1-17-23-PM.jpg" alt="GCD Token Logo" class="w-12 h-12 rounded-full object-cover glow-effect"> <span class="text-2xl font-display font-bold text-white">GCD Token</span>
+   <div class="particle" style="left: 90%; width: 4px; height: 4px; animation-delay: 1.5s;"></div><!-- Navigation -->
+   <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex justify-between items-center h-16">
+      <div class="flex items-center space-x-2">
+       <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center"><span class="text-white font-bold text-xl">G</span>
+       </div><span class="font-bold text-xl text-gray-900">GCD Token</span>
       </div>
-      <div class="hidden md:flex items-center gap-8"><a href="#inicio" class="nav-link text-white font-medium">Inicio</a> <a href="#caracteristicas" class="nav-link text-white font-medium">Características</a> <a href="#tokenomics" class="nav-link text-white font-medium">Tokenomics</a> <a href="#roadmap" class="nav-link text-white font-medium">Roadmap</a> <a href="#comunidad" class="nav-link text-white font-medium">Comunidad</a>
-      </div>
-      <div class="polygon-badge">
-       <svg class="w-5 h-5" viewbox="0 0 38 33" fill="none"><path d="M29 10.2L23.5 13.5L19.5 15.8L14 19.1L8.5 15.8L3 12.5L8.5 9.2L14 5.9L19.5 9.2L29 10.2Z" fill="#8247e5" /> <path d="M8.5 22.1L14 25.4L19.5 22.1L14 18.8L8.5 22.1Z" fill="#8247e5" />
-       </svg><span class="text-white text-sm">Polygon Network</span>
-      </div>
-     </div>
-    </nav>
-   </header><!-- Hero Section -->
-   <section id="inicio" class="w-full pt-40 pb-28 px-6 relative">
-    <div class="max-w-7xl mx-auto">
-     <div class="grid md:grid-cols-2 gap-16 items-center">
-      <div class="space-y-8">
-       <h1 class="hero-title text-5xl md:text-7xl font-display font-bold text-white leading-tight">El Futuro de las <span class="crypto-gradient bg-clip-text text-transparent"> Transacciones Digitales</span></h1>
-       <p class="text-xl text-gray-300 leading-relaxed font-light" style="animation: fadeInUp 1s ease 0.3s forwards; opacity: 0;">GCD Token es un activo digital innovador construido en Polygon, diseñado para revolucionar la forma en que realizas transacciones en el ecosistema blockchain.</p>
-       <div class="flex flex-wrap gap-6" style="animation: fadeInUp 1s ease 0.6s forwards; opacity: 0;"><button class="btn-primary px-10 py-4 crypto-gradient text-white font-semibold rounded-full text-lg shadow-lg"> Comprar GCD </button> <button class="px-10 py-4 glass-effect text-white font-semibold rounded-full text-lg hover:bg-white hover:bg-opacity-20 transition-all"> Ver Documentación </button>
-       </div><!-- Stats Mini -->
-       <div class="grid grid-cols-3 gap-6 pt-8" style="animation: fadeInUp 1s ease 0.9s forwards; opacity: 0;">
-        <div class="text-center">
-         <div class="text-3xl font-bold text-white font-display">
-          $2.45
-         </div>
-         <div class="text-sm text-gray-400 mt-1">
-          Precio Actual
-         </div>
-        </div>
-        <div class="text-center">
-         <div class="text-3xl font-bold text-green-400 font-display">
-          +24.5%
-         </div>
-         <div class="text-sm text-gray-400 mt-1">
-          24h
-         </div>
-        </div>
-        <div class="text-center">
-         <div class="text-3xl font-bold text-white font-display">
-          $8.2M
-         </div>
-         <div class="text-sm text-gray-400 mt-1">
-          Market Cap
-         </div>
-        </div>
-       </div>
-      </div>
-      <div class="relative floating">
-       <div class="glass-effect rounded-3xl p-10 glow-effect">
-        <svg viewbox="0 0 400 300" class="w-full h-auto"><defs>
-          <lineargradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-           <stop offset="0%" style="stop-color:#667eea;stop-opacity:0.8" />
-           <stop offset="100%" style="stop-color:#764ba2;stop-opacity:0.2" />
-          </lineargradient>
-         </defs> <path d="M 20 250 L 60 200 L 100 180 L 140 160 L 180 120 L 220 100 L 260 80 L 300 50 L 340 40 L 380 30" stroke="#667eea" stroke-width="4" fill="none" class="chart-line" /> <path d="M 20 250 L 60 200 L 100 180 L 140 160 L 180 120 L 220 100 L 260 80 L 300 50 L 340 40 L 380 30 L 380 300 L 20 300 Z" fill="url(#chartGradient)" opacity="0.6" /> <circle cx="380" cy="30" r="6" fill="#f093fb" class="pulse-animation" />
-        </svg>
-       </div>
-      </div>
+      <div class="hidden md:flex items-center space-x-8"><a href="#features" class="nav-link text-gray-600 hover:text-purple-600 transition-colors">Características</a> <a href="#about" class="nav-link text-gray-600 hover:text-purple-600 transition-colors">Acerca de</a> <a href="#tokenomics" class="nav-link text-gray-600 hover:text-purple-600 transition-colors">Tokenomics</a>
+       <div class="polygon-badge">
+        <svg class="w-5 h-5" viewbox="0 0 38 33" fill="none"><path d="M29 10.2L23.5 13.5L19.5 15.8L14 19.1L8.5 15.8L3 12.5L8.5 9.2L14 5.9L19.5 9.2L29 10.2Z" fill="#8247e5" /> <path d="M8.5 22.1L14 25.4L19.5 22.1L14 18.8L8.5 22.1Z" fill="#8247e5" />
+        </svg><span class="text-purple-700 text-sm font-semibold">Polygon Network</span>
+       </div><button class="gradient-bg text-white px-6 py-2 rounded-lg font-medium btn-primary"> Conectar Wallet </button>
+      </div><button class="md:hidden text-gray-600">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+       </svg></button>
      </div>
     </div>
-   </section><!-- Stats Section -->
-   <section class="w-full py-20 px-6">
+   </nav><!-- Hero Section -->
+   <section class="pt-24 pb-20 px-4 sm:px-6 lg:px-8 gradient-bg">
     <div class="max-w-7xl mx-auto">
-     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div class="stat-card glass-effect rounded-2xl p-8 text-center hover:scale-105 transition-transform">
-       <div class="text-5xl font-bold crypto-gradient bg-clip-text text-transparent font-display mb-3">
-        100M
+     <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="text-white">
+       <div class="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6"><span class="text-sm font-medium">🚀 Construido en Polygon Network</span>
        </div>
-       <div class="text-gray-300 text-lg font-medium">
-        Supply Total
-       </div>
-      </div>
-      <div class="stat-card glass-effect rounded-2xl p-8 text-center hover:scale-105 transition-transform">
-       <div class="text-5xl font-bold crypto-gradient bg-clip-text text-transparent font-display mb-3">
-        50K+
-       </div>
-       <div class="text-gray-300 text-lg font-medium">
-        Holders
+       <h1 id="main-title" class="hero-title text-5xl md:text-6xl font-bold mb-6 leading-tight">GCD Token</h1>
+       <p id="main-subtitle" class="text-2xl md:text-3xl font-semibold mb-4 text-purple-100">El Futuro de las Transacciones Digitales</p>
+       <p id="hero-description" class="text-lg mb-8 text-purple-100">Token nativo construido en la red Polygon para transacciones rápidas, seguras y de bajo costo. Únete a la revolución de las finanzas descentralizadas.</p>
+       <div class="flex flex-wrap gap-4"><button id="cta-button" class="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold text-lg btn-primary"> Comenzar Ahora </button> <button class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-purple-600 transition-all"> Ver Documentación </button>
        </div>
       </div>
-      <div class="stat-card glass-effect rounded-2xl p-8 text-center hover:scale-105 transition-transform">
-       <div class="text-5xl font-bold crypto-gradient bg-clip-text text-transparent font-display mb-3">
-        &lt;$0.01
-       </div>
-       <div class="text-gray-300 text-lg font-medium">
-        Tarifas de Gas
-       </div>
-      </div>
-      <div class="stat-card glass-effect rounded-2xl p-8 text-center hover:scale-105 transition-transform">
-       <div class="text-5xl font-bold crypto-gradient bg-clip-text text-transparent font-display mb-3">
-        2 seg
-       </div>
-       <div class="text-gray-300 text-lg font-medium">
-        Velocidad TX
+      <div class="relative">
+       <div class="floating">
+        <svg class="w-full h-auto" viewbox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="200" cy="200" r="150" fill="white" opacity="0.1" /> <circle cx="200" cy="200" r="120" fill="white" opacity="0.2" /> <circle cx="200" cy="200" r="90" fill="white" opacity="0.3" /> <circle cx="200" cy="200" r="60" fill="white" opacity="0.9" /> <path d="M200 160 L220 200 L200 240 L180 200 Z" fill="#667eea" /> <circle cx="200" cy="120" r="15" fill="#FFD700" /> <circle cx="280" cy="200" r="15" fill="#FFD700" /> <circle cx="200" cy="280" r="15" fill="#FFD700" /> <circle cx="120" cy="200" r="15" fill="#FFD700" />
+        </svg>
        </div>
       </div>
      </div>
@@ -409,73 +388,83 @@
    <section id="caracteristicas" class="w-full py-28 px-6">
     <div class="max-w-7xl mx-auto">
      <div class="text-center mb-20">
-      <h2 class="section-title text-5xl font-display font-bold text-white mb-6">¿Por qué elegir GCD Token?</h2>
+      <h2 id="features-title" class="section-title text-5xl font-display font-bold text-white mb-6">¿Por qué elegir GCD Token?</h2>
       <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">Construido sobre Polygon para ofrecer velocidad, seguridad y costos ultra bajos</p>
      </div>
-     <div class="grid md:grid-cols-3 gap-10">
+     <div class="grid md:grid-cols-3 gap-10"><!-- Feature 1: Transacciones Rápidas -->
       <div class="feature-card glass-effect rounded-3xl p-10 cursor-pointer" onclick="toggleDetails(this)">
        <div class="w-16 h-16 crypto-gradient rounded-2xl flex items-center justify-center mb-6 glow-effect">
-        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
        </div>
        <div class="flex items-center justify-between mb-4">
-        <h3 class="text-2xl font-display font-bold text-white">Transacciones Rápidas</h3>
-        <svg class="w-6 h-6 text-white transform transition-transform duration-300 chevron-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        <h3 id="feature-1-title" class="text-2xl font-display font-bold text-white">Transacciones Rápidas</h3>
+        <svg class="w-6 h-6 text-white transform transition-transform duration-300 chevron-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
        </div>
-       <p class="text-gray-300 leading-relaxed text-lg">Confirma tus transacciones en segundos gracias a la infraestructura de Polygon. Sin esperas, sin demoras.</p>
-       <div class="hidden-details mt-6 pt-6 border-t border-gray-600" style="display: none;">
-        <h4 class="text-xl font-semibold text-purple-400 mb-4">Detalles Técnicos:</h4>
-        <ul class="space-y-3 text-gray-300">
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Tiempo promedio:</strong> 2-3 segundos por transacción</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Capacidad:</strong> Hasta 65,000 TPS en Polygon</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Confirmaciones:</strong> Finality casi instantánea</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Red:</strong> Polygon PoS (Proof of Stake)</span></li>
-        </ul>
+       <p id="feature-1-desc" class="text-gray-300 text-lg leading-relaxed mb-4">Confirma tus transacciones en segundos gracias a la infraestructura de Polygon. Sin esperas, sin demoras.</p>
+       <div class="hidden-details">
+        <div class="mt-6 pt-6 border-t border-white/20">
+         <h4 class="text-xl font-semibold text-purple-300 mb-4">Detalles Técnicos:</h4>
+         <ul class="space-y-3 text-gray-300">
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Tiempo promedio:</strong> 2-3 segundos por transacción</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Capacidad:</strong> Hasta 65,000 TPS en Polygon</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Confirmaciones:</strong> Finality casi instantánea</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Red:</strong> Polygon PoS (Proof of Stake)</span></li>
+         </ul>
+        </div>
        </div>
-      </div>
-      <div class="feature-card glass-effect rounded-3xl p-10 cursor-pointer" onclick="toggleDetails(this)">
-       <div class="w-16 h-16 crypto-gradient rounded-2xl flex items-center justify-center mb-6 glow-effect">
-        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-       </div>
-       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-2xl font-display font-bold text-white">Máxima Seguridad</h3>
-        <svg class="w-6 h-6 text-white transform transition-transform duration-300 chevron-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-       </div>
-       <p class="text-gray-300 leading-relaxed text-lg">Protección de nivel empresarial con auditorías de contratos inteligentes y tecnología blockchain probada.</p>
-       <div class="hidden-details mt-6 pt-6 border-t border-gray-600" style="display: none;">
-        <h4 class="text-xl font-semibold text-purple-400 mb-4">Características de Seguridad:</h4>
-        <ul class="space-y-3 text-gray-300">
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Auditoría:</strong> Certificado por CertiK y Hacken</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Smart Contract:</strong> Código verificado en PolygonScan</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Liquidez:</strong> Bloqueada por 2 años</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Ownership:</strong> Renunciado (no hay backdoors)</span></li>
-        </ul>
-       </div>
-      </div>
+      </div><!-- Feature 2: Costos Bajos -->
       <div class="feature-card glass-effect rounded-3xl p-10 cursor-pointer" onclick="toggleDetails(this)">
        <div class="w-16 h-16 crypto-gradient rounded-2xl flex items-center justify-center mb-6 glow-effect">
         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
        </div>
        <div class="flex items-center justify-between mb-4">
-        <h3 class="text-2xl font-display font-bold text-white">Tarifas Mínimas</h3>
-        <svg class="w-6 h-6 text-white transform transition-transform duration-300 chevron-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        <h3 id="feature-2-title" class="text-2xl font-display font-bold text-white">Costos Bajos</h3>
+        <svg class="w-6 h-6 text-white transform transition-transform duration-300 chevron-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
        </div>
-       <p class="text-gray-300 leading-relaxed text-lg">Disfruta de costos de transacción increíblemente bajos. Ahorra dinero en cada operación que realices.</p>
-       <div class="hidden-details mt-6 pt-6 border-t border-gray-600" style="display: none;">
-        <h4 class="text-xl font-semibold text-purple-400 mb-4">Estructura de Costos:</h4>
-        <ul class="space-y-3 text-gray-300">
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Gas en Polygon:</strong> $0.001 - $0.01 por TX</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Tax de compra:</strong> 0% (sin impuestos)</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Tax de venta:</strong> 0% (sin impuestos)</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Ahorro vs Ethereum:</strong> 99.9% menos costos</span></li>
-        </ul>
+       <p id="feature-2-desc" class="text-gray-300 text-lg leading-relaxed mb-4">Tarifas de transacción mínimas que te permiten maximizar tu inversión. Gas fees reducidos al máximo.</p>
+       <div class="hidden-details">
+        <div class="mt-6 pt-6 border-t border-white/20">
+         <h4 class="text-xl font-semibold text-purple-300 mb-4">Ventajas Económicas:</h4>
+         <ul class="space-y-3 text-gray-300">
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Tarifas:</strong> Menores a $0.01 por transacción</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Ahorro:</strong> Hasta 99% comparado con Ethereum</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Microtransacciones:</strong> Ideal para pagos pequeños</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Gas predictible:</strong> Costos estables y transparentes</span></li>
+         </ul>
+        </div>
        </div>
-      </div>
+      </div><!-- Feature 3: Máxima Seguridad -->
+      <div class="feature-card glass-effect rounded-3xl p-10 cursor-pointer" onclick="toggleDetails(this)">
+       <div class="w-16 h-16 crypto-gradient rounded-2xl flex items-center justify-center mb-6 glow-effect">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+       </div>
+       <div class="flex items-center justify-between mb-4">
+        <h3 id="feature-3-title" class="text-2xl font-display font-bold text-white">Máxima Seguridad</h3>
+        <svg class="w-6 h-6 text-white transform transition-transform duration-300 chevron-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+       </div>
+       <p id="feature-3-desc" class="text-gray-300 text-lg leading-relaxed mb-4">Protección de nivel empresarial con auditorías de contratos inteligentes y tecnología blockchain probada.</p>
+       <div class="hidden-details">
+        <div class="mt-6 pt-6 border-t border-white/20">
+         <h4 class="text-xl font-semibold text-purple-300 mb-4">Características de Seguridad:</h4>
+         <ul class="space-y-3 text-gray-300">
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Auditoría:</strong> Certificado por CertiK y Hacken</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Smart Contract:</strong> Código verificado en PolygonScan</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Liquidez:</strong> Bloqueada por 2 años</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Ownership:</strong> Renunciado (no hay backdoors)</span></li>
+         </ul>
+        </div>
+       </div>
+      </div><!-- Feature 4: Ecosistema Global -->
       <div class="feature-card glass-effect rounded-3xl p-10 cursor-pointer" onclick="toggleDetails(this)">
        <div class="w-16 h-16 crypto-gradient rounded-2xl flex items-center justify-center mb-6 glow-effect">
         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -487,16 +476,18 @@
         </svg>
        </div>
        <p class="text-gray-300 leading-relaxed text-lg">Accede a un ecosistema en crecimiento con múltiples integraciones DeFi y casos de uso reales.</p>
-       <div class="hidden-details mt-6 pt-6 border-t border-gray-600" style="display: none;">
-        <h4 class="text-xl font-semibold text-purple-400 mb-4">Integraciones Activas:</h4>
-        <ul class="space-y-3 text-gray-300">
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>DEX:</strong> QuickSwap, SushiSwap, Uniswap V3</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Wallets:</strong> MetaMask, Trust Wallet, Coinbase Wallet</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Lending:</strong> Aave, Compound (próximamente)</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Bridge:</strong> Polygon Bridge oficial</span></li>
-        </ul>
+       <div class="hidden-details">
+        <div class="mt-6 pt-6 border-t border-white/20">
+         <h4 class="text-xl font-semibold text-purple-300 mb-4">Integraciones Activas:</h4>
+         <ul class="space-y-3 text-gray-300">
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>DEX:</strong> QuickSwap, SushiSwap, Uniswap V3</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Wallets:</strong> MetaMask, Trust Wallet, Coinbase Wallet</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Lending:</strong> Aave, Compound (próximamente)</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Bridge:</strong> Polygon Bridge oficial</span></li>
+         </ul>
+        </div>
        </div>
-      </div>
+      </div><!-- Feature 5: Comunidad Activa -->
       <div class="feature-card glass-effect rounded-3xl p-10 cursor-pointer" onclick="toggleDetails(this)">
        <div class="w-16 h-16 crypto-gradient rounded-2xl flex items-center justify-center mb-6 glow-effect">
         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -508,16 +499,18 @@
         </svg>
        </div>
        <p class="text-gray-300 leading-relaxed text-lg">Únete a una comunidad vibrante de holders, desarrolladores y entusiastas del blockchain.</p>
-       <div class="hidden-details mt-6 pt-6 border-t border-gray-600" style="display: none;">
-        <h4 class="text-xl font-semibold text-purple-400 mb-4">Nuestra Comunidad:</h4>
-        <ul class="space-y-3 text-gray-300">
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Telegram:</strong> 25,000+ miembros activos</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Twitter:</strong> 50,000+ seguidores</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Discord:</strong> Servidor con soporte 24/7</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Eventos:</strong> AMAs semanales con el equipo</span></li>
-        </ul>
+       <div class="hidden-details">
+        <div class="mt-6 pt-6 border-t border-white/20">
+         <h4 class="text-xl font-semibold text-purple-300 mb-4">Nuestra Comunidad:</h4>
+         <ul class="space-y-3 text-gray-300">
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Telegram:</strong> 25,000+ miembros activos</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Twitter:</strong> 50,000+ seguidores</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Discord:</strong> Servidor con soporte 24/7</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Eventos:</strong> AMAs semanales con el equipo</span></li>
+         </ul>
+        </div>
        </div>
-      </div>
+      </div><!-- Feature 6: Totalmente Auditado -->
       <div class="feature-card glass-effect rounded-3xl p-10 cursor-pointer" onclick="toggleDetails(this)">
        <div class="w-16 h-16 crypto-gradient rounded-2xl flex items-center justify-center mb-6 glow-effect">
         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -529,449 +522,526 @@
         </svg>
        </div>
        <p class="text-gray-300 leading-relaxed text-lg">Contratos inteligentes auditados por firmas reconocidas. Transparencia y confianza garantizadas.</p>
-       <div class="hidden-details mt-6 pt-6 border-t border-gray-600" style="display: none;">
-        <h4 class="text-xl font-semibold text-purple-400 mb-4">Auditorías Completadas:</h4>
-        <ul class="space-y-3 text-gray-300">
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>CertiK:</strong> Score 95/100 - Sin vulnerabilidades críticas</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Hacken:</strong> Certificado de seguridad AA rating</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Verificación:</strong> Código público en PolygonScan</span></li>
-         <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Transparencia:</strong> Auditorías disponibles para descarga</span></li>
-        </ul>
+       <div class="hidden-details">
+        <div class="mt-6 pt-6 border-t border-white/20">
+         <h4 class="text-xl font-semibold text-purple-300 mb-4">Auditorías Completadas:</h4>
+         <ul class="space-y-3 text-gray-300">
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>CertiK:</strong> Score 95/100 - Sin vulnerabilidades críticas</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Hacken:</strong> Certificado de seguridad AA rating</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Verificación:</strong> Código público en PolygonScan</span></li>
+          <li class="flex items-start gap-2"><span class="text-purple-400 font-bold">•</span> <span><strong>Transparencia:</strong> Auditorías disponibles para descarga</span></li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Stats Section -->
+   <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+    <div class="max-w-7xl mx-auto">
+     <div class="grid md:grid-cols-4 gap-8 text-center">
+      <div>
+       <div id="transactions-counter" class="text-5xl font-bold gradient-bg bg-clip-text text-transparent mb-2">
+        0
+       </div>
+       <div class="text-gray-600 font-medium">
+        Transacciones
+       </div>
+      </div>
+      <div>
+       <div id="holders-counter" class="text-5xl font-bold gradient-bg bg-clip-text text-transparent mb-2">
+        0
+       </div>
+       <div class="text-gray-600 font-medium">
+        Holders
+       </div>
+      </div>
+      <div>
+       <div id="marketcap-counter" class="text-5xl font-bold gradient-bg bg-clip-text text-transparent mb-2">
+        $0
+       </div>
+       <div class="text-gray-600 font-medium">
+        Market Cap
+       </div>
+      </div>
+      <div>
+       <div class="text-5xl font-bold gradient-bg bg-clip-text text-transparent mb-2">
+        24/7
+       </div>
+       <div class="text-gray-600 font-medium">
+        Soporte
        </div>
       </div>
      </div>
     </div>
    </section><!-- Tokenomics Section -->
-   <section id="tokenomics" class="w-full py-28 px-6">
+   <section id="tokenomics" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
     <div class="max-w-7xl mx-auto">
-     <div class="text-center mb-20">
-      <h2 class="section-title text-5xl font-display font-bold text-white mb-6">Tokenomics</h2>
-      <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">Distribución transparente y sostenible para el crecimiento a largo plazo</p>
+     <div class="text-center mb-16">
+      <h2 class="section-title text-4xl font-bold text-gray-900 mb-4">Tokenomics</h2>
+      <p class="text-xl text-gray-600">Distribución transparente y equitativa</p>
      </div>
-     <div class="grid md:grid-cols-2 gap-16 items-center">
-      <div class="glass-effect rounded-3xl p-12">
-       <div class="relative w-full" style="height: 400px;">
-        <svg viewbox="0 0 200 200" class="w-full h-full"><circle cx="100" cy="100" r="80" fill="none" stroke="#1f2937" stroke-width="20" /> <circle cx="100" cy="100" r="80" fill="none" stroke="#667eea" stroke-width="20" stroke-dasharray="150.8 351.84" stroke-dashoffset="25" class="pulse-animation" /> <circle cx="100" cy="100" r="80" fill="none" stroke="#764ba2" stroke-width="20" stroke-dasharray="100.53 401.11" stroke-dashoffset="-125" class="pulse-animation" style="animation-delay: 0.5s" /> <circle cx="100" cy="100" r="80" fill="none" stroke="#f093fb" stroke-width="20" stroke-dasharray="75.4 426.24" stroke-dashoffset="-225" class="pulse-animation" style="animation-delay: 1s" /> <circle cx="100" cy="100" r="80" fill="none" stroke="#a855f7" stroke-width="20" stroke-dasharray="50.27 451.37" stroke-dashoffset="-300" class="pulse-animation" style="animation-delay: 1.5s" />
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center">
-         <div class="text-center">
-          <div class="text-4xl font-bold text-white font-display">
-           100M
+     <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+       <div class="bg-white p-8 rounded-2xl shadow-lg">
+        <div class="space-y-6">
+         <div>
+          <div class="flex justify-between mb-2"><span class="font-semibold text-gray-700">Comunidad</span> <span class="font-bold text-purple-600">40%</span>
           </div>
-          <div class="text-gray-400 mt-2">
-           Tokens Totales
+          <div class="w-full bg-gray-200 rounded-full h-3">
+           <div class="gradient-bg h-3 rounded-full" style="width: 40%"></div>
+          </div>
+         </div>
+         <div>
+          <div class="flex justify-between mb-2"><span class="font-semibold text-gray-700">Desarrollo</span> <span class="font-bold text-purple-600">25%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-3">
+           <div class="gradient-bg h-3 rounded-full" style="width: 25%"></div>
+          </div>
+         </div>
+         <div>
+          <div class="flex justify-between mb-2"><span class="font-semibold text-gray-700">Liquidez</span> <span class="font-bold text-purple-600">20%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-3">
+           <div class="gradient-bg h-3 rounded-full" style="width: 20%"></div>
+          </div>
+         </div>
+         <div>
+          <div class="flex justify-between mb-2"><span class="font-semibold text-gray-700">Equipo</span> <span class="font-bold text-purple-600">15%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-3">
+           <div class="gradient-bg h-3 rounded-full" style="width: 15%"></div>
           </div>
          </div>
         </div>
        </div>
       </div>
       <div class="space-y-6">
-       <div class="glass-effect rounded-2xl p-6 hover:scale-105 transition-transform">
-        <div class="flex items-center justify-between mb-3"><span class="text-xl font-semibold text-white font-display">Venta Pública</span> <span class="text-2xl font-bold crypto-gradient bg-clip-text text-transparent">30%</span>
-        </div>
-        <div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-         <div class="h-full crypto-gradient rounded-full" style="width: 30%; animation: expandBar 1.5s ease forwards;"></div>
-        </div>
+       <div class="bg-white p-6 rounded-xl shadow-md">
+        <h3 class="font-bold text-xl text-gray-900 mb-2">Supply Total</h3>
+        <p class="text-3xl font-bold gradient-bg bg-clip-text text-transparent">1,000,000,000 GCD</p>
        </div>
-       <div class="glass-effect rounded-2xl p-6 hover:scale-105 transition-transform">
-        <div class="flex items-center justify-between mb-3"><span class="text-xl font-semibold text-white font-display">Liquidez</span> <span class="text-2xl font-bold crypto-gradient bg-clip-text text-transparent">20%</span>
-        </div>
-        <div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-         <div class="h-full crypto-gradient rounded-full" style="width: 20%; animation: expandBar 1.5s ease 0.2s forwards; width: 0;"></div>
-        </div>
+       <div class="bg-white p-6 rounded-xl shadow-md">
+        <h3 class="font-bold text-xl text-gray-900 mb-2">Red</h3>
+        <p class="text-2xl font-semibold text-purple-600">Polygon (MATIC)</p>
        </div>
-       <div class="glass-effect rounded-2xl p-6 hover:scale-105 transition-transform">
-        <div class="flex items-center justify-between mb-3"><span class="text-xl font-semibold text-white font-display">Desarrollo</span> <span class="text-2xl font-bold crypto-gradient bg-clip-text text-transparent">15%</span>
-        </div>
-        <div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-         <div class="h-full crypto-gradient rounded-full" style="width: 15%; animation: expandBar 1.5s ease 0.4s forwards; width: 0;"></div>
-        </div>
-       </div>
-       <div class="glass-effect rounded-2xl p-6 hover:scale-105 transition-transform">
-        <div class="flex items-center justify-between mb-3"><span class="text-xl font-semibold text-white font-display">Marketing</span> <span class="text-2xl font-bold crypto-gradient bg-clip-text text-transparent">15%</span>
-        </div>
-        <div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-         <div class="h-full crypto-gradient rounded-full" style="width: 15%; animation: expandBar 1.5s ease 0.6s forwards; width: 0;"></div>
-        </div>
-       </div>
-       <div class="glass-effect rounded-2xl p-6 hover:scale-105 transition-transform">
-        <div class="flex items-center justify-between mb-3"><span class="text-xl font-semibold text-white font-display">Equipo &amp; Advisors</span> <span class="text-2xl font-bold crypto-gradient bg-clip-text text-transparent">10%</span>
-        </div>
-        <div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-         <div class="h-full crypto-gradient rounded-full" style="width: 10%; animation: expandBar 1.5s ease 0.8s forwards; width: 0;"></div>
-        </div>
-       </div>
-       <div class="glass-effect rounded-2xl p-6 hover:scale-105 transition-transform">
-        <div class="flex items-center justify-between mb-3"><span class="text-xl font-semibold text-white font-display">Reserva Ecosistema</span> <span class="text-2xl font-bold crypto-gradient bg-clip-text text-transparent">10%</span>
-        </div>
-        <div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-         <div class="h-full crypto-gradient rounded-full" style="width: 10%; animation: expandBar 1.5s ease 1s forwards; width: 0;"></div>
-        </div>
+       <div class="bg-white p-6 rounded-xl shadow-md">
+        <h3 class="font-bold text-xl text-gray-900 mb-2">Tipo de Token</h3>
+        <p class="text-2xl font-semibold text-purple-600">ERC-20</p>
        </div>
       </div>
      </div>
     </div>
    </section><!-- Roadmap Section -->
-   <section id="roadmap" class="w-full py-28 px-6">
-    <div class="max-w-7xl mx-auto">
-     <div class="text-center mb-20">
-      <h2 class="section-title text-5xl font-display font-bold text-white mb-6">Roadmap 2025</h2>
-      <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">Nuestra visión para el futuro del ecosistema GCD</p>
+   <section id="roadmap" class="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden" style="background: linear-gradient(180deg, #0a0e27 0%, #1a1f3a 100%);">
+    <div class="max-w-7xl mx-auto relative z-10">
+     <div class="text-center mb-16">
+      <h2 class="section-title text-4xl font-bold text-white mb-4">Roadmap</h2>
+      <p class="text-xl text-purple-200">Nuestro plan hacia el futuro</p>
      </div>
-     <div class="space-y-8">
-      <div class="roadmap-item grid md:grid-cols-12 gap-8 items-center">
-       <div class="md:col-span-2 text-center md:text-right">
-        <div class="inline-block px-6 py-3 crypto-gradient rounded-full font-bold text-white text-lg">
-         Q1
+     <div class="space-y-8"><!-- Q1 2024 -->
+      <div class="roadmap-item glass-effect rounded-2xl p-8 border-l-4 border-purple-500">
+       <div class="flex items-start gap-6">
+        <div class="flex-shrink-0">
+         <div class="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-white font-bold text-xl">
+          Q1
+         </div>
+        </div>
+        <div class="flex-1">
+         <h3 class="text-2xl font-bold text-white mb-3">Q1 2024 - Lanzamiento</h3>
+         <ul class="space-y-2 text-purple-200">
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-green-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+           </svg><span>✅ Lanzamiento del token en Polygon</span></li>
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-green-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+           </svg><span>✅ Auditoría de seguridad completada</span></li>
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-green-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+           </svg><span>✅ Listado en DEX principales</span></li>
+         </ul>
         </div>
        </div>
-       <div class="md:col-span-1 flex justify-center">
-        <div class="w-1 h-full bg-gradient-to-b from-purple-600 to-transparent"></div>
-       </div>
-       <div class="md:col-span-9 glass-effect rounded-2xl p-8">
-        <h3 class="text-2xl font-display font-bold text-white mb-4">Lanzamiento &amp; Fundación</h3>
-        <ul class="space-y-3 text-gray-300 text-lg">
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-green-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
-          </svg><span>Lanzamiento oficial del token GCD en Polygon</span></li>
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-green-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
-          </svg><span>Auditoría completa de contratos inteligentes</span></li>
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-green-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
-          </svg><span>Listado en principales DEX de Polygon</span></li>
-        </ul>
-       </div>
-      </div>
-      <div class="roadmap-item grid md:grid-cols-12 gap-8 items-center">
-       <div class="md:col-span-2 text-center md:text-right">
-        <div class="inline-block px-6 py-3 crypto-gradient rounded-full font-bold text-white text-lg">
-         Q2
+      </div><!-- Q2 2024 -->
+      <div class="roadmap-item glass-effect rounded-2xl p-8 border-l-4 border-blue-500">
+       <div class="flex items-start gap-6">
+        <div class="flex-shrink-0">
+         <div class="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-white font-bold text-xl">
+          Q2
+         </div>
+        </div>
+        <div class="flex-1">
+         <h3 class="text-2xl font-bold text-white mb-3">Q2 2024 - Expansión</h3>
+         <ul class="space-y-2 text-purple-200">
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+           </svg><span>🔄 Asociaciones estratégicas con proyectos DeFi</span></li>
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+           </svg><span>🔄 Programa de staking activo</span></li>
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+           </svg><span>🔄 Lanzamiento de aplicación móvil</span></li>
+         </ul>
         </div>
        </div>
-       <div class="md:col-span-1 flex justify-center">
-        <div class="w-1 h-full bg-gradient-to-b from-purple-600 to-transparent"></div>
-       </div>
-       <div class="md:col-span-9 glass-effect rounded-2xl p-8">
-        <h3 class="text-2xl font-display font-bold text-white mb-4">Expansión del Ecosistema</h3>
-        <ul class="space-y-3 text-gray-300 text-lg">
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-yellow-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-          </svg><span>Lanzamiento de staking con APY competitivo</span></li>
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-yellow-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-          </svg><span>Partnerships estratégicos con proyectos DeFi</span></li>
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-yellow-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-          </svg><span>Aplicación móvil beta (iOS y Android)</span></li>
-        </ul>
-       </div>
-      </div>
-      <div class="roadmap-item grid md:grid-cols-12 gap-8 items-center">
-       <div class="md:col-span-2 text-center md:text-right">
-        <div class="inline-block px-6 py-3 crypto-gradient rounded-full font-bold text-white text-lg">
-         Q3
+      </div><!-- Q3 2024 -->
+      <div class="roadmap-item glass-effect rounded-2xl p-8 border-l-4 border-indigo-500">
+       <div class="flex items-start gap-6">
+        <div class="flex-shrink-0">
+         <div class="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-white font-bold text-xl">
+          Q3
+         </div>
+        </div>
+        <div class="flex-1">
+         <h3 class="text-2xl font-bold text-white mb-3">Q3 2024 - Integración</h3>
+         <ul class="space-y-2 text-purple-200">
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+           </svg><span>📅 Integración con wallets principales</span></li>
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+           </svg><span>📅 Listado en exchanges centralizados</span></li>
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+           </svg><span>📅 Expansión del ecosistema DeFi</span></li>
+         </ul>
         </div>
        </div>
-       <div class="md:col-span-1 flex justify-center">
-        <div class="w-1 h-full bg-gradient-to-b from-purple-600 to-transparent"></div>
-       </div>
-       <div class="md:col-span-9 glass-effect rounded-2xl p-8">
-        <h3 class="text-2xl font-display font-bold text-white mb-4">Crecimiento Global</h3>
-        <ul class="space-y-3 text-gray-300 text-lg">
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-blue-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-          </svg><span>Listado en exchanges centralizados Tier 1</span></li>
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-blue-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-          </svg><span>Integración con plataformas de pagos cripto</span></li>
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-blue-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-          </svg><span>Campaña de marketing internacional</span></li>
-        </ul>
-       </div>
-      </div>
-      <div class="roadmap-item grid md:grid-cols-12 gap-8 items-center">
-       <div class="md:col-span-2 text-center md:text-right">
-        <div class="inline-block px-6 py-3 crypto-gradient rounded-full font-bold text-white text-lg">
-         Q4
+      </div><!-- Q4 2024 -->
+      <div class="roadmap-item glass-effect rounded-2xl p-8 border-l-4 border-pink-500">
+       <div class="flex items-start gap-6">
+        <div class="flex-shrink-0">
+         <div class="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-white font-bold text-xl">
+          Q4
+         </div>
+        </div>
+        <div class="flex-1">
+         <h3 class="text-2xl font-bold text-white mb-3">Q4 2024 - Innovación</h3>
+         <ul class="space-y-2 text-purple-200">
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+           </svg><span>📅 Lanzamiento de GCD DAO</span></li>
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+           </svg><span>📅 NFT Marketplace integrado</span></li>
+          <li class="flex items-center gap-2">
+           <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+           </svg><span>📅 Expansión multi-chain</span></li>
+         </ul>
         </div>
        </div>
-       <div class="md:col-span-1 flex justify-center">
-        <div class="w-1 h-full bg-gradient-to-b from-purple-600 to-transparent"></div>
-       </div>
-       <div class="md:col-span-9 glass-effect rounded-2xl p-8">
-        <h3 class="text-2xl font-display font-bold text-white mb-4">Innovación &amp; Futuro</h3>
-        <ul class="space-y-3 text-gray-300 text-lg">
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-purple-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-          </svg><span>Lanzamiento de GCD DAO para gobernanza comunitaria</span></li>
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-purple-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-          </svg><span>Cross-chain bridges a Ethereum y BSC</span></li>
-         <li class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-purple-400 flex-shrink-0 mt-1" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-          </svg><span>Lanzamiento de marketplace NFT integrado</span></li>
-        </ul>
-       </div>
       </div>
-     </div>
-    </div>
-   </section><!-- Community Section -->
-   <section id="comunidad" class="w-full py-28 px-6">
-    <div class="max-w-7xl mx-auto">
-     <div class="text-center mb-20">
-      <h2 class="section-title text-5xl font-display font-bold text-white mb-6">Únete a la Comunidad</h2>
-      <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">Sé parte del movimiento GCD y conecta con miles de holders en todo el mundo</p>
-     </div>
-     <div class="grid md:grid-cols-3 gap-10"><a href="#" class="feature-card glass-effect rounded-3xl p-10 text-center group">
-       <div class="w-20 h-20 crypto-gradient rounded-full flex items-center justify-center mb-6 mx-auto glow-effect">
-        <svg class="w-10 h-10 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
-        </svg>
-       </div><h3 class="text-2xl font-display font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">Medium</h3><p class="text-gray-300">Artículos y actualizaciones</p></a> <a href="#" class="feature-card glass-effect rounded-3xl p-10 text-center group">
-       <div class="w-20 h-20 crypto-gradient rounded-full flex items-center justify-center mb-6 mx-auto glow-effect">
-        <svg class="w-10 h-10 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-        </svg>
-       </div><h3 class="text-2xl font-display font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">Twitter</h3><p class="text-gray-300">Noticias en tiempo real</p></a> <a href="#" class="feature-card glass-effect rounded-3xl p-10 text-center group">
-       <div class="w-20 h-20 crypto-gradient rounded-full flex items-center justify-center mb-6 mx-auto glow-effect">
-        <svg class="w-10 h-10 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z" />
-        </svg>
-       </div><h3 class="text-2xl font-display font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">Telegram</h3><p class="text-gray-300">Chat comunitario 24/7</p></a>
      </div>
     </div>
    </section><!-- CTA Section -->
-   <section class="w-full py-28 px-6">
-    <div class="max-w-5xl mx-auto">
-     <div class="glass-effect rounded-3xl p-16 text-center glow-effect">
-      <h2 class="text-5xl font-display font-bold text-white mb-6">¿Listo para comenzar?</h2>
-      <p class="text-xl text-gray-300 mb-10 leading-relaxed max-w-3xl mx-auto">Únete a la revolución blockchain y experimenta transacciones ultrarrápidas con tarifas mínimas</p>
-      <div class="flex flex-wrap gap-6 justify-center"><button class="btn-primary px-12 py-5 crypto-gradient text-white font-semibold rounded-full text-xl shadow-lg"> Comprar GCD Ahora </button> <button class="px-12 py-5 glass-effect text-white font-semibold rounded-full text-xl hover:bg-white hover:bg-opacity-20 transition-all"> Ver en PolygonScan </button>
-      </div>
+   <section class="py-20 px-4 sm:px-6 lg:px-8 gradient-bg">
+    <div class="max-w-4xl mx-auto text-center">
+     <h2 id="cta-title" class="text-4xl md:text-5xl font-bold text-white mb-6">Únete a la Revolución</h2>
+     <p class="text-xl text-purple-100 mb-10">Sé parte del futuro de las finanzas descentralizadas con GCD Token</p>
+     <div class="flex flex-wrap justify-center gap-4"><button class="bg-white text-purple-600 px-10 py-4 rounded-lg font-bold text-lg btn-primary"> Comprar GCD </button> <button class="border-2 border-white text-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-purple-600 transition-all"> Whitepaper </button>
      </div>
     </div>
    </section><!-- Footer -->
-   <footer class="w-full py-16 px-6 glass-effect mt-20">
+   <footer class="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
-     <div class="grid md:grid-cols-4 gap-12 mb-12">
-      <div class="space-y-6">
-       <div class="flex items-center gap-3"><img src="https://i.postimg.cc/DwgGWVg3/Whats-App-Image-2025-12-14-at-1-17-23-PM.jpg" alt="GCD Token Logo" class="w-12 h-12 rounded-full object-cover"> <span class="text-2xl font-display font-bold text-white">GCD Token</span>
+     <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div>
+       <div class="flex items-center space-x-2 mb-4">
+        <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center"><span class="text-white font-bold text-xl">G</span>
+        </div><span class="font-bold text-xl">GCD Token</span>
        </div>
-       <p class="text-gray-400 leading-relaxed">El futuro de las transacciones digitales en Polygon</p>
+       <p class="text-gray-400">El futuro de las transacciones digitales en Polygon.</p>
       </div>
       <div>
-       <h4 class="text-white font-display font-bold text-lg mb-6">Enlaces</h4>
-       <ul class="space-y-3">
-        <li><a href="#inicio" class="text-gray-400 hover:text-white transition-colors">Inicio</a></li>
-        <li><a href="#caracteristicas" class="text-gray-400 hover:text-white transition-colors">Características</a></li>
-        <li><a href="#tokenomics" class="text-gray-400 hover:text-white transition-colors">Tokenomics</a></li>
-        <li><a href="#roadmap" class="text-gray-400 hover:text-white transition-colors">Roadmap</a></li>
+       <h4 class="font-bold mb-4">Producto</h4>
+       <ul class="space-y-2 text-gray-400">
+        <li><a href="#" class="hover:text-white transition-colors">Características</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Tokenomics</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Roadmap</a></li>
        </ul>
       </div>
       <div>
-       <h4 class="text-white font-display font-bold text-lg mb-6">Recursos</h4>
-       <ul class="space-y-3">
-        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Whitepaper</a></li>
-        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Documentación</a></li>
-        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Auditoría</a></li>
-        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+       <h4 class="font-bold mb-4">Recursos</h4>
+       <ul class="space-y-2 text-gray-400">
+        <li><a href="#" class="hover:text-white transition-colors">Documentación</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Whitepaper</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
        </ul>
       </div>
       <div>
-       <h4 class="text-white font-display font-bold text-lg mb-6">Legal</h4>
-       <ul class="space-y-3">
-        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Términos de Uso</a></li>
-        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Política de Privacidad</a></li>
-        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Descargo de Responsabilidad</a></li>
-       </ul>
+       <h4 class="font-bold mb-4">Comunidad</h4>
+       <div class="flex space-x-4"><a href="#" class="text-gray-400 hover:text-white transition-colors">
+         <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+         </svg></a> <a href="#" class="text-gray-400 hover:text-white transition-colors">
+         <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0 a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+         </svg></a> <a href="#" class="text-gray-400 hover:text-white transition-colors">
+         <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+         </svg></a>
+       </div>
       </div>
      </div>
-     <div class="border-t border-gray-700 pt-8 text-center">
-      <p class="text-gray-400">© 2025 GCD Token. Todos los derechos reservados.</p>
+     <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+      <p>© 2024 GCD Token. Todos los derechos reservados.</p>
      </div>
     </div>
    </footer>
   </div>
   <script>
-    function toggleDetails(card) {
-      const details = card.querySelector('.hidden-details');
-      const chevron = card.querySelector('.chevron-icon');
-      
-      if (details.style.display === 'none' || details.style.display === '') {
-        details.style.display = 'block';
-        chevron.style.transform = 'rotate(180deg)';
-        card.style.transform = 'translateY(-16px) scale(1.02)';
-      } else {
-        details.style.display = 'none';
-        chevron.style.transform = 'rotate(0deg)';
-        card.style.transform = '';
-      }
+    const defaultConfig = {
+      background_color: "#0a0e27",
+      gradient_primary: "#667eea",
+      gradient_secondary: "#764ba2",
+      accent_color: "#f093fb",
+      text_color: "#ffffff",
+      font_family: "Space Grotesk",
+      font_size: 16,
+      main_title: "GCD Token",
+      main_subtitle: "El Futuro de las Transacciones Digitales",
+      hero_description: "Token nativo construido en la red Polygon para transacciones rápidas, seguras y de bajo costo. Únete a la revolución de las finanzas descentralizadas.",
+      features_title: "¿Por qué elegir GCD Token?",
+      feature_1_title: "Transacciones Rápidas",
+      feature_1_desc: "Confirma tus transacciones en segundos gracias a la infraestructura de Polygon. Sin esperas, sin demoras.",
+      feature_2_title: "Costos Bajos",
+      feature_2_desc: "Tarifas de transacción mínimas que te permiten maximizar tu inversión. Gas fees reducidos al máximo.",
+      feature_3_title: "Máxima Seguridad",
+      feature_3_desc: "Protección de nivel empresarial con auditorías de contratos inteligentes y tecnología blockchain probada.",
+      cta_title: "Únete a la Revolución",
+      cta_button: "Comenzar Ahora"
+    };
+
+    async function onConfigChange(config) {
+      const baseSize = config.font_size || defaultConfig.font_size;
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = 'Inter, sans-serif';
+      const headingFontStack = 'Space Grotesk, sans-serif';
+
+      // Apply font family
+      document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(el => {
+        el.style.fontFamily = `${customFont}, ${headingFontStack}`;
+      });
+      document.querySelectorAll('p, span, a, button, div').forEach(el => {
+        if (!el.closest('h1, h2, h3, h4, h5, h6')) {
+          el.style.fontFamily = `${customFont}, ${baseFontStack}`;
+        }
+      });
+
+      // Apply font sizes
+      document.querySelectorAll('h1').forEach(el => {
+        el.style.fontSize = `${baseSize * 2.5}px`;
+      });
+      document.querySelectorAll('h2').forEach(el => {
+        el.style.fontSize = `${baseSize * 2}px`;
+      });
+      document.querySelectorAll('h3').forEach(el => {
+        el.style.fontSize = `${baseSize * 1.5}px`;
+      });
+      document.querySelectorAll('p').forEach(el => {
+        el.style.fontSize = `${baseSize}px`;
+      });
+
+      // Apply colors using CSS custom properties
+      const backgroundColor = config.background_color || defaultConfig.background_color;
+      const primaryColor = config.gradient_primary || defaultConfig.gradient_primary;
+      const secondaryColor = config.gradient_secondary || defaultConfig.gradient_secondary;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+
+      document.documentElement.style.setProperty('--background-color', backgroundColor);
+      document.documentElement.style.setProperty('--gradient-primary', primaryColor);
+      document.documentElement.style.setProperty('--gradient-secondary', secondaryColor);
+      document.documentElement.style.setProperty('--accent-color', accentColor);
+      document.documentElement.style.setProperty('--text-color', textColor);
+
+      document.getElementById('app').style.background = `linear-gradient(180deg, ${backgroundColor} 0%, #1a1f3a 50%, ${backgroundColor} 100%)`;
+
+      document.querySelectorAll('h1, h2, h3, h4').forEach(el => {
+        if (!el.closest('.bg-white, .bg-gray-50')) {
+          el.style.color = textColor;
+        }
+      });
+
+      // Update editable text content
+      const mainTitle = document.getElementById('main-title');
+      if (mainTitle) mainTitle.textContent = config.main_title || defaultConfig.main_title;
+
+      const mainSubtitle = document.getElementById('main-subtitle');
+      if (mainSubtitle) mainSubtitle.textContent = config.main_subtitle || defaultConfig.main_subtitle;
+
+      const heroDescription = document.getElementById('hero-description');
+      if (heroDescription) heroDescription.textContent = config.hero_description || defaultConfig.hero_description;
+
+      const featuresTitle = document.getElementById('features-title');
+      if (featuresTitle) featuresTitle.textContent = config.features_title || defaultConfig.features_title;
+
+      const feature1Title = document.getElementById('feature-1-title');
+      if (feature1Title) feature1Title.textContent = config.feature_1_title || defaultConfig.feature_1_title;
+
+      const feature1Desc = document.getElementById('feature-1-desc');
+      if (feature1Desc) feature1Desc.textContent = config.feature_1_desc || defaultConfig.feature_1_desc;
+
+      const feature2Title = document.getElementById('feature-2-title');
+      if (feature2Title) feature2Title.textContent = config.feature_2_title || defaultConfig.feature_2_title;
+
+      const feature2Desc = document.getElementById('feature-2-desc');
+      if (feature2Desc) feature2Desc.textContent = config.feature_2_desc || defaultConfig.feature_2_desc;
+
+      const feature3Title = document.getElementById('feature-3-title');
+      if (feature3Title) feature3Title.textContent = config.feature_3_title || defaultConfig.feature_3_title;
+
+      const feature3Desc = document.getElementById('feature-3-desc');
+      if (feature3Desc) feature3Desc.textContent = config.feature_3_desc || defaultConfig.feature_3_desc;
+
+      const ctaTitle = document.getElementById('cta-title');
+      if (ctaTitle) ctaTitle.textContent = config.cta_title || defaultConfig.cta_title;
+
+      const ctaButton = document.getElementById('cta-button');
+      if (ctaButton) ctaButton.textContent = config.cta_button || defaultConfig.cta_button;
     }
 
-    (async function() {
-      const defaultConfig = {
-        hero_title: "El Futuro de las Transacciones Digitales",
-        hero_description: "GCD Token es un activo digital innovador construido en Polygon, diseñado para revolucionar la forma en que realizas transacciones en el ecosistema blockchain.",
-        features_title: "¿Por qué elegir GCD Token?",
-        tokenomics_title: "Tokenomics",
-        roadmap_title: "Roadmap 2025",
-        community_title: "Únete a la Comunidad",
-        cta_title: "¿Listo para comenzar?",
-        cta_description: "Únete a la revolución blockchain y experimenta transacciones ultrarrápidas con tarifas mínimas",
-        background_color: "#0a0e27",
-        gradient_primary: "#667eea",
-        gradient_secondary: "#764ba2",
-        text_color: "#ffffff",
-        accent_color: "#f093fb"
-      };
-
-      async function onConfigChange(config) {
-        const heroTitle = document.querySelector('.hero-title');
-        if (heroTitle) {
-          const titleText = config.hero_title || defaultConfig.hero_title;
-          const titleParts = titleText.split('Transacciones Digitales');
-          if (titleParts.length > 1) {
-            heroTitle.innerHTML = `${titleParts[0]}<span class="crypto-gradient bg-clip-text text-transparent">Transacciones Digitales</span>${titleParts[1]}`;
-          } else {
-            heroTitle.innerHTML = titleText;
-          }
-        }
-
-        const heroDesc = document.querySelector('.hero-title + p');
-        if (heroDesc) {
-          heroDesc.textContent = config.hero_description || defaultConfig.hero_description;
-        }
-
-        const featuresTitle = document.querySelector('#caracteristicas .section-title');
-        if (featuresTitle) {
-          featuresTitle.textContent = config.features_title || defaultConfig.features_title;
-        }
-
-        const tokenomicsTitle = document.querySelector('#tokenomics .section-title');
-        if (tokenomicsTitle) {
-          tokenomicsTitle.textContent = config.tokenomics_title || defaultConfig.tokenomics_title;
-        }
-
-        const roadmapTitle = document.querySelector('#roadmap .section-title');
-        if (roadmapTitle) {
-          roadmapTitle.textContent = config.roadmap_title || defaultConfig.roadmap_title;
-        }
-
-        const communityTitle = document.querySelector('#comunidad .section-title');
-        if (communityTitle) {
-          communityTitle.textContent = config.community_title || defaultConfig.community_title;
-        }
-
-        const ctaTitle = document.querySelector('.glass-effect.glow-effect h2');
-        if (ctaTitle) {
-          ctaTitle.textContent = config.cta_title || defaultConfig.cta_title;
-        }
-
-        const ctaDesc = document.querySelector('.glass-effect.glow-effect p');
-        if (ctaDesc) {
-          ctaDesc.textContent = config.cta_description || defaultConfig.cta_description;
-        }
-
-        const backgroundColor = config.background_color || defaultConfig.background_color;
-        document.getElementById('app').style.background = `linear-gradient(180deg, ${backgroundColor} 0%, #1a1f3a 50%, ${backgroundColor} 100%)`;
-
-        const primaryColor = config.gradient_primary || defaultConfig.gradient_primary;
-        const secondaryColor = config.gradient_secondary || defaultConfig.gradient_secondary;
-        const accentColor = config.accent_color || defaultConfig.accent_color;
-        
-        document.documentElement.style.setProperty('--gradient-primary', primaryColor);
-        document.documentElement.style.setProperty('--gradient-secondary', secondaryColor);
-        document.documentElement.style.setProperty('--accent-color', accentColor);
-
-        const textColor = config.text_color || defaultConfig.text_color;
-        document.querySelectorAll('h1, h2, h3, h4').forEach(el => {
-          el.style.color = textColor;
-        });
-      }
-
-      function mapToCapabilities(config) {
-        return {
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
           recolorables: [
             {
               get: () => config.background_color || defaultConfig.background_color,
               set: (value) => {
                 config.background_color = value;
-                if (window.elementSdk) {
-                  window.elementSdk.setConfig({ background_color: value });
-                }
+                window.elementSdk.setConfig({ background_color: value });
               }
             },
             {
               get: () => config.gradient_primary || defaultConfig.gradient_primary,
               set: (value) => {
                 config.gradient_primary = value;
-                if (window.elementSdk) {
-                  window.elementSdk.setConfig({ gradient_primary: value });
-                }
+                window.elementSdk.setConfig({ gradient_primary: value });
               }
             },
             {
               get: () => config.gradient_secondary || defaultConfig.gradient_secondary,
               set: (value) => {
                 config.gradient_secondary = value;
-                if (window.elementSdk) {
-                  window.elementSdk.setConfig({ gradient_secondary: value });
-                }
+                window.elementSdk.setConfig({ gradient_secondary: value });
               }
             },
             {
               get: () => config.text_color || defaultConfig.text_color,
               set: (value) => {
                 config.text_color = value;
-                if (window.elementSdk) {
-                  window.elementSdk.setConfig({ text_color: value });
-                }
+                window.elementSdk.setConfig({ text_color: value });
               }
             },
             {
               get: () => config.accent_color || defaultConfig.accent_color,
               set: (value) => {
                 config.accent_color = value;
-                if (window.elementSdk) {
-                  window.elementSdk.setConfig({ accent_color: value });
-                }
+                window.elementSdk.setConfig({ accent_color: value });
               }
             }
           ],
           borderables: [],
           fontEditable: undefined,
           fontSizeable: undefined
-        };
-      }
-
-      function mapToEditPanelValues(config) {
-        return new Map([
-          ["hero_title", config.hero_title || defaultConfig.hero_title],
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["main_title", config.main_title || defaultConfig.main_title],
+          ["main_subtitle", config.main_subtitle || defaultConfig.main_subtitle],
           ["hero_description", config.hero_description || defaultConfig.hero_description],
           ["features_title", config.features_title || defaultConfig.features_title],
-          ["tokenomics_title", config.tokenomics_title || defaultConfig.tokenomics_title],
-          ["roadmap_title", config.roadmap_title || defaultConfig.roadmap_title],
-          ["community_title", config.community_title || defaultConfig.community_title],
+          ["feature_1_title", config.feature_1_title || defaultConfig.feature_1_title],
+          ["feature_1_desc", config.feature_1_desc || defaultConfig.feature_1_desc],
+          ["feature_2_title", config.feature_2_title || defaultConfig.feature_2_title],
+          ["feature_2_desc", config.feature_2_desc || defaultConfig.feature_2_desc],
+          ["feature_3_title", config.feature_3_title || defaultConfig.feature_3_title],
+          ["feature_3_desc", config.feature_3_desc || defaultConfig.feature_3_desc],
           ["cta_title", config.cta_title || defaultConfig.cta_title],
-          ["cta_description", config.cta_description || defaultConfig.cta_description]
-        ]);
-      }
+          ["cta_button", config.cta_button || defaultConfig.cta_button]
+        ])
+      });
+    }
 
-      if (window.elementSdk) {
-        await window.elementSdk.init({
-          defaultConfig,
-          onConfigChange,
-          mapToCapabilities,
-          mapToEditPanelValues
-        });
-      }
-    })();
-  </script>
-  <style>
-    @keyframes expandBar {
-      from {
-        width: 0;
+    // Toggle details function for feature cards
+    function toggleDetails(card) {
+      const detailsDiv = card.querySelector('.hidden-details');
+      const chevron = card.querySelector('.chevron-icon');
+      
+      if (detailsDiv.classList.contains('active')) {
+        detailsDiv.classList.remove('active');
+        chevron.style.transform = 'rotate(0deg)';
+      } else {
+        detailsDiv.classList.add('active');
+        chevron.style.transform = 'rotate(180deg)';
       }
     }
-  </style>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ae9c858211eafbc',t:'MTc2NTg0MTk5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
+    // Counter animation function
+    function animateCounter(element, target, suffix = '', duration = 2000) {
+      let current = 0;
+      const increment = target / (duration / 16);
+      const isDecimal = target % 1 !== 0;
+      
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        
+        let displayValue;
+        if (isDecimal) {
+          displayValue = current.toFixed(1);
+        } else {
+          displayValue = Math.floor(current).toLocaleString();
+        }
+        
+        element.textContent = suffix + displayValue + (current === target && !isDecimal ? '+' : '');
+      }, 16);
+    }
+
+    // Initialize counters when page loads
+    function initializeCounters() {
+      const transactionsEl = document.getElementById('transactions-counter');
+      const holdersEl = document.getElementById('holders-counter');
+      const marketcapEl = document.getElementById('marketcap-counter');
+
+      // Animate from 0 to target values
+      animateCounter(transactionsEl, 10000000, '', 2500); // 10M
+      animateCounter(holdersEl, 50000, '', 2500); // 50K
+      animateCounter(marketcapEl, 100, '$', 2500); // $100M (we'll add M after)
+      
+      // For market cap, we need special handling for the M suffix
+      let currentMarketCap = 0;
+      const targetMarketCap = 100;
+      const increment = targetMarketCap / (2500 / 16);
+      
+      const marketCapTimer = setInterval(() => {
+        currentMarketCap += increment;
+        if (currentMarketCap >= targetMarketCap) {
+          currentMarketCap = targetMarketCap;
+          clearInterval(marketCapTimer);
+        }
+        marketcapEl.textContent = '$' + Math.floor(currentMarketCap) + 'M+';
+      }, 16);
+    }
+
+    // Start counters when page loads
+    window.addEventListener('load', initializeCounters);
+
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b32897670aba1cc',t:'MTc2NjYwNDg3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
